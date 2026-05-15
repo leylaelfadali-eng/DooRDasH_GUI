@@ -9,6 +9,8 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
+import game.gui.*;
+
 
 public class StartController {
 
@@ -30,7 +32,12 @@ public class StartController {
 
     private void loadGame(Role role) throws Exception {
         Game game = new Game(role);
-        // We'll load the game screen here next
-        System.out.println("Starting game as: " + role);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameView.fxml"));
+        Parent root = loader.load();
+        GameController controller = loader.getController();
+        controller.initGame(game);
+        Stage stage = (Stage) scarerButton.getScene().getWindow();
+        stage.setScene(new Scene(root, 1280, 720));
+        stage.show();
     }
 }
