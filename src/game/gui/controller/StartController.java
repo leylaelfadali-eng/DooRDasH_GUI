@@ -9,7 +9,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.control.Button;
 import javafx.event.ActionEvent;
-import game.gui.*;
+
 
 
 public class StartController {
