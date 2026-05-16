@@ -1,0 +1,91 @@
+<html>
+<head>
+<title>DoorCell.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+DoorCell.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">cells</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">Board</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">Role</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">interfaces</span><span class="s2">.</span><span class="s1">CanisterModifier</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">monsters</span><span class="s2">.</span><span class="s1">Monster</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">DoorCell </span><span class="s0">extends </span><span class="s1">Cell </span><span class="s0">implements </span><span class="s1">CanisterModifier </span><span class="s2">{</span>
+	<span class="s0">private </span><span class="s1">Role role</span><span class="s2">;</span>
+	<span class="s0">private int </span><span class="s1">energy</span><span class="s2">;</span>
+	<span class="s0">private boolean </span><span class="s1">activated</span><span class="s2">;</span>
+	
+	<span class="s0">public </span><span class="s1">DoorCell</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">, </span><span class="s1">Role role</span><span class="s2">, </span><span class="s0">int </span><span class="s1">energy</span><span class="s2">) {</span>
+		<span class="s0">super</span><span class="s2">(</span><span class="s1">name</span><span class="s2">);</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">role </span><span class="s2">= </span><span class="s1">role</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">energy </span><span class="s2">= </span><span class="s1">energy</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">activated </span><span class="s2">= </span><span class="s0">false</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public </span><span class="s1">Role getRole</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">role</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public int </span><span class="s1">getEnergy</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">energy</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public boolean </span><span class="s1">isActivated</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">activated</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public void </span><span class="s1">setActivated</span><span class="s2">(</span><span class="s0">boolean </span><span class="s1">isActivated</span><span class="s2">) {</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">activated </span><span class="s2">= </span><span class="s1">isActivated</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s1">@Override</span>
+	<span class="s0">public void </span><span class="s1">onLand</span><span class="s2">(</span><span class="s1">Monster landingMonster</span><span class="s2">, </span><span class="s1">Monster opponentMonster</span><span class="s2">) {</span>
+		<span class="s0">super</span><span class="s2">.</span><span class="s1">onLand</span><span class="s2">(</span><span class="s1">landingMonster</span><span class="s2">, </span><span class="s1">opponentMonster</span><span class="s2">);</span>
+		
+		<span class="s0">if</span><span class="s2">(</span><span class="s1">isActivated</span><span class="s2">())</span>
+			<span class="s0">return</span><span class="s2">; </span>
+		
+		<span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">landingMonster</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">() + </span><span class="s3">&quot; landed on &quot; </span><span class="s2">+ </span><span class="s1">role </span><span class="s2">+ </span><span class="s3">&quot; door!&quot;</span><span class="s2">);</span>
+		
+		<span class="s0">boolean </span><span class="s1">wasShielded </span><span class="s2">= </span><span class="s1">landingMonster</span><span class="s2">.</span><span class="s1">isShielded</span><span class="s2">();</span>
+	     
+		<span class="s1">modifyCanisterEnergy</span><span class="s2">(</span><span class="s1">landingMonster</span><span class="s2">, </span><span class="s0">this</span><span class="s2">.</span><span class="s1">energy</span><span class="s2">);</span>
+
+		<span class="s4">// Only block if the monster took damage (opposing team) and was shielded</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">wasShielded </span><span class="s2">&amp;&amp; </span><span class="s1">landingMonster</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">() != </span><span class="s0">this</span><span class="s2">.</span><span class="s1">role</span><span class="s2">) </span>
+			<span class="s0">return</span><span class="s2">;</span>
+
+	    
+		<span class="s0">for </span><span class="s2">(</span><span class="s1">Monster monster </span><span class="s2">: </span><span class="s1">Board</span><span class="s2">.</span><span class="s1">getStationedMonsters</span><span class="s2">()) {</span>
+			<span class="s4">//Only affect team members</span>
+			<span class="s0">if </span><span class="s2">(</span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">() == </span><span class="s1">landingMonster</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">()) {</span>
+				<span class="s1">modifyCanisterEnergy</span><span class="s2">(</span><span class="s1">monster</span><span class="s2">, </span><span class="s0">this</span><span class="s2">.</span><span class="s1">energy</span><span class="s2">);</span>
+				<span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s3">&quot;  -&gt; &quot; </span><span class="s2">+ </span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">() + </span><span class="s3">&quot; got &quot; </span><span class="s2">+ </span><span class="s0">this</span><span class="s2">.</span><span class="s1">energy </span><span class="s2">+ </span><span class="s3">&quot; energy!&quot;</span><span class="s2">);</span>
+			<span class="s2">}</span>
+		<span class="s2">}</span>
+		
+		<span class="s1">setActivated</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+	<span class="s2">}</span>
+
+	<span class="s1">@Override</span>
+	<span class="s0">public void </span><span class="s1">modifyCanisterEnergy</span><span class="s2">(</span><span class="s1">Monster monster</span><span class="s2">, </span><span class="s0">int </span><span class="s1">canisterValue</span><span class="s2">) {</span>
+		<span class="s4">//Affect on team members vary according to role</span>
+		<span class="s1">monster</span><span class="s2">.</span><span class="s1">alterEnergy</span><span class="s2">(</span><span class="s0">this</span><span class="s2">.</span><span class="s1">role </span><span class="s2">== </span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">() ? </span><span class="s1">canisterValue </span><span class="s2">: -</span><span class="s1">canisterValue</span><span class="s2">);</span>
+	<span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

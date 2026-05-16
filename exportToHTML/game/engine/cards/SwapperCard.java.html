@@ -1,0 +1,42 @@
+<html>
+<head>
+<title>SwapperCard.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+SwapperCard.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">cards</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">monsters</span><span class="s2">.</span><span class="s1">Monster</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">SwapperCard </span><span class="s0">extends </span><span class="s1">Card </span><span class="s2">{</span>
+
+	<span class="s0">public </span><span class="s1">SwapperCard</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">, </span><span class="s1">String description</span><span class="s2">, </span><span class="s0">int </span><span class="s1">rarity</span><span class="s2">) {</span>
+		<span class="s0">super</span><span class="s2">(</span><span class="s1">name</span><span class="s2">, </span><span class="s1">description</span><span class="s2">, </span><span class="s1">rarity</span><span class="s2">, </span><span class="s0">true</span><span class="s2">);</span>
+	<span class="s2">}</span>
+
+	<span class="s1">@Override</span>
+	<span class="s0">public void </span><span class="s1">performAction</span><span class="s2">(</span><span class="s1">Monster player</span><span class="s2">, </span><span class="s1">Monster opponent</span><span class="s2">) {</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">player</span><span class="s2">.</span><span class="s1">compareTo</span><span class="s2">(</span><span class="s1">opponent</span><span class="s2">) &lt; </span><span class="s3">0</span><span class="s2">) {</span>
+			<span class="s0">int </span><span class="s1">playerPosition </span><span class="s2">= </span><span class="s1">player</span><span class="s2">.</span><span class="s1">getPosition</span><span class="s2">();</span>
+			<span class="s1">player</span><span class="s2">.</span><span class="s1">setPosition</span><span class="s2">(</span><span class="s1">opponent</span><span class="s2">.</span><span class="s1">getPosition</span><span class="s2">());</span>
+			<span class="s1">opponent</span><span class="s2">.</span><span class="s1">setPosition</span><span class="s2">(</span><span class="s1">playerPosition</span><span class="s2">);</span>
+			<span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Swapped positions! &quot; </span><span class="s2">+ </span><span class="s1">player</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">() + </span><span class="s4">&quot; and &quot; </span><span class="s2">+ </span><span class="s1">opponent</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">());</span>
+		<span class="s2">}</span>
+	<span class="s2">}</span>
+
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

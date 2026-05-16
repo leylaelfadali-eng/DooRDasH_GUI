@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #1E3248;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1">
-   <left>
-      <VBox prefHeight="200.0" prefWidth="220.0" style="-fx-background-color: #142236; -fx-padding: 15; -fx-spacing: 10;" BorderPane.alignment="CENTER" />
-   </left>
-   <center>
-      <StackPane prefHeight="150.0" prefWidth="200.0" style="-fx-background-color: #1E3248; -fx-padding: 10;" BorderPane.alignment="CENTER" />
-   </center>
-   <right>
-      <VBox prefHeight="200.0" prefWidth="220.0" style="-fx-background-color: #142236; -fx-padding: 15; -fx-spacing: 10;" BorderPane.alignment="CENTER" />
-   </right>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" style="-fx-background-color: #1E3248;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="game.gui.controller.GameController">
+    <left>
+        <VBox fx:id="playerPanel" prefHeight="720.0" prefWidth="220.0" style="-fx-background-color: #142236; -fx-padding: 15; -fx-spacing: 10;" BorderPane.alignment="CENTER" />
+    </left>
+    <center>
+        <StackPane fx:id="boardContainer" prefHeight="720.0" prefWidth="840.0" style="-fx-background-color: #1E3248; -fx-padding: 10;" BorderPane.alignment="CENTER" />
+    </center>
+    <right>
+        <VBox fx:id="opponentPanel" prefHeight="720.0" prefWidth="220.0" style="-fx-background-color: #142236; -fx-padding: 15; -fx-spacing: 10;" BorderPane.alignment="CENTER" />
+    </right>
+    <bottom>
+        <Label fx:id="statusLabel" style="-fx-text-fill: #FFD700; -fx-font-size: 14px; -fx-font-weight: bold; -fx-padding: 10;" BorderPane.alignment="CENTER" />
+    </bottom>
 </BorderPane>

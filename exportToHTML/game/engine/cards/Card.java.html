@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>Card.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Card.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">cards</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">monsters</span><span class="s2">.</span><span class="s1">Monster</span><span class="s2">;</span>
+
+<span class="s0">public abstract class </span><span class="s1">Card </span><span class="s2">{</span>
+	<span class="s0">private </span><span class="s1">String name</span><span class="s2">;</span>
+	<span class="s0">private </span><span class="s1">String description</span><span class="s2">;</span>
+	<span class="s0">private int </span><span class="s1">rarity</span><span class="s2">;</span>
+	<span class="s0">private boolean </span><span class="s1">lucky</span><span class="s2">;</span>
+	
+	<span class="s0">public </span><span class="s1">Card</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">, </span><span class="s1">String description</span><span class="s2">, </span><span class="s0">int </span><span class="s1">rarity</span><span class="s2">, </span><span class="s0">boolean </span><span class="s1">lucky</span><span class="s2">) {</span>
+		<span class="s0">super</span><span class="s2">();</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">name </span><span class="s2">= </span><span class="s1">name</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">description </span><span class="s2">= </span><span class="s1">description</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">rarity </span><span class="s2">= </span><span class="s1">rarity</span><span class="s2">;</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">lucky </span><span class="s2">= </span><span class="s1">lucky</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public </span><span class="s1">String getName</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">name</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">String getDescription</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">description</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public int </span><span class="s1">getRarity</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">rarity</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public boolean </span><span class="s1">isLucky</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">lucky</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public abstract void </span><span class="s1">performAction</span><span class="s2">(</span><span class="s1">Monster player</span><span class="s2">, </span><span class="s1">Monster opponent</span><span class="s2">);</span>
+	
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

@@ -1,0 +1,61 @@
+<html>
+<head>
+<title>MonsterCell.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+MonsterCell.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">cells</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">monsters</span><span class="s2">.*;</span>
+
+<span class="s0">public class </span><span class="s1">MonsterCell </span><span class="s0">extends </span><span class="s1">Cell </span><span class="s2">{</span>
+	<span class="s0">private </span><span class="s1">Monster cellMonster</span><span class="s2">;</span>
+
+	<span class="s0">public </span><span class="s1">MonsterCell</span><span class="s2">(</span><span class="s1">String name</span><span class="s2">, </span><span class="s1">Monster cellMonster</span><span class="s2">) {</span>
+		<span class="s0">super</span><span class="s2">(</span><span class="s1">name</span><span class="s2">);</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">cellMonster </span><span class="s2">= </span><span class="s1">cellMonster</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">public </span><span class="s1">Monster getCellMonster</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">cellMonster</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s1">@Override</span>
+    <span class="s0">public void </span><span class="s1">onLand</span><span class="s2">(</span><span class="s1">Monster landingMonster</span><span class="s2">, </span><span class="s1">Monster opponentMonster</span><span class="s2">) {</span>
+		<span class="s0">super</span><span class="s2">.</span><span class="s1">onLand</span><span class="s2">(</span><span class="s1">landingMonster</span><span class="s2">, </span><span class="s1">opponentMonster</span><span class="s2">);</span>
+		
+		<span class="s3">// Same role: Use landing monster's powerup!</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cellMonster</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">() == </span><span class="s1">landingMonster</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">()) {</span>
+        	<span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">landingMonster</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">() + </span><span class="s4">&quot; encountered ally &quot; </span><span class="s2">+ </span><span class="s1">cellMonster</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">() + </span><span class="s4">&quot;!&quot;</span><span class="s2">);</span>
+        	<span class="s1">landingMonster</span><span class="s2">.</span><span class="s1">executePowerupEffect</span><span class="s2">(</span><span class="s1">opponentMonster</span><span class="s2">);</span>
+        <span class="s2">}</span>
+        
+        <span class="s3">// Different role: Swap if landing monster has more energy</span>
+        <span class="s0">else </span><span class="s2">{</span>
+        	<span class="s0">if </span><span class="s2">(</span><span class="s1">landingMonster</span><span class="s2">.</span><span class="s1">getEnergy</span><span class="s2">() &gt; </span><span class="s1">cellMonster</span><span class="s2">.</span><span class="s1">getEnergy</span><span class="s2">()) {</span>
+        	    <span class="s0">int </span><span class="s1">landingEnergy </span><span class="s2">= </span><span class="s1">landingMonster</span><span class="s2">.</span><span class="s1">getEnergy</span><span class="s2">();</span>
+        	    <span class="s0">int </span><span class="s1">cellEnergy </span><span class="s2">= </span><span class="s1">cellMonster</span><span class="s2">.</span><span class="s1">getEnergy</span><span class="s2">();</span>
+        	    <span class="s0">int </span><span class="s1">diff </span><span class="s2">= </span><span class="s1">landingEnergy </span><span class="s2">- </span><span class="s1">cellEnergy</span><span class="s2">;</span>
+
+        	    <span class="s1">landingMonster</span><span class="s2">.</span><span class="s1">alterEnergy</span><span class="s2">(-</span><span class="s1">diff</span><span class="s2">); </span><span class="s3">// shield will block this if active</span>
+        	    <span class="s1">cellMonster</span><span class="s2">.</span><span class="s1">alterEnergy</span><span class="s2">(</span><span class="s1">diff</span><span class="s2">);     </span><span class="s3">// cell monster always gets the gain</span>
+        	    <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Energy swapped between &quot; </span><span class="s2">+ </span><span class="s1">landingMonster</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">() + </span><span class="s4">&quot; and &quot; </span><span class="s2">+ </span><span class="s1">cellMonster</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">());</span>
+        	<span class="s2">}</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

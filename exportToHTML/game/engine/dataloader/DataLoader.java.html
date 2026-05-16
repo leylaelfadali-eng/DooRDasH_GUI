@@ -1,0 +1,153 @@
+<html>
+<head>
+<title>DataLoader.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #6aab73;}
+.s4 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+DataLoader.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">dataloader</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">BufferedReader</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">FileReader</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">IOException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">InvalidCSVFormat</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">Role</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">cards</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">cells</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">monsters</span><span class="s2">.*;</span>
+
+<span class="s0">public class </span><span class="s1">DataLoader </span><span class="s2">{</span>
+	<span class="s0">private static final </span><span class="s1">String CARDS_FILE_NAME </span><span class="s2">= </span><span class="s3">&quot;cards.csv&quot;</span><span class="s2">;</span>
+	<span class="s0">private static final </span><span class="s1">String CELLS_FILE_NAME </span><span class="s2">= </span><span class="s3">&quot;cells.csv&quot;</span><span class="s2">;</span>
+	<span class="s0">private static final </span><span class="s1">String MONSTERS_FILE_NAME </span><span class="s2">= </span><span class="s3">&quot;monsters.csv&quot;</span><span class="s2">;</span>
+	
+	<span class="s1">@SuppressWarnings</span><span class="s2">(</span><span class="s3">&quot;resource&quot;</span><span class="s2">)</span>
+	<span class="s0">public static </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Card</span><span class="s2">&gt; </span><span class="s1">readCards</span><span class="s2">() </span><span class="s0">throws </span><span class="s1">IOException </span><span class="s2">{</span>
+		<span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Card</span><span class="s2">&gt; </span><span class="s1">cards </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Card</span><span class="s2">&gt;();</span>
+
+		<span class="s1">BufferedReader br </span><span class="s2">= </span><span class="s0">new </span><span class="s1">BufferedReader</span><span class="s2">(</span><span class="s0">new </span><span class="s1">FileReader</span><span class="s2">(</span><span class="s1">CARDS_FILE_NAME</span><span class="s2">));</span>
+
+		<span class="s0">while </span><span class="s2">(</span><span class="s1">br</span><span class="s2">.</span><span class="s1">ready</span><span class="s2">()) {</span>
+			<span class="s1">String nextLine </span><span class="s2">= </span><span class="s1">br</span><span class="s2">.</span><span class="s1">readLine</span><span class="s2">();</span>
+			<span class="s1">String</span><span class="s2">[] </span><span class="s1">data </span><span class="s2">= </span><span class="s1">nextLine</span><span class="s2">.</span><span class="s1">split</span><span class="s2">(</span><span class="s3">&quot;,&quot;</span><span class="s2">);</span>
+			
+
+			<span class="s0">if </span><span class="s2">(</span><span class="s1">data</span><span class="s2">.</span><span class="s1">length </span><span class="s2">!= </span><span class="s4">4 </span><span class="s2">&amp;&amp; </span><span class="s1">data</span><span class="s2">.</span><span class="s1">length </span><span class="s2">!= </span><span class="s4">5</span><span class="s2">) {</span>
+				<span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">data</span><span class="s2">.</span><span class="s1">length</span><span class="s2">);</span>
+				<span class="s0">throw new </span><span class="s1">InvalidCSVFormat</span><span class="s2">(</span><span class="s1">nextLine</span><span class="s2">);</span>
+			<span class="s2">}</span>
+				
+			
+			<span class="s1">String cardType </span><span class="s2">= </span><span class="s1">data</span><span class="s2">[</span><span class="s4">0</span><span class="s2">];</span>
+			<span class="s1">Card card</span><span class="s2">;</span>
+			
+			<span class="s0">switch </span><span class="s2">(</span><span class="s1">cardType</span><span class="s2">) {</span>
+				<span class="s0">case </span><span class="s3">&quot;SWAPPER&quot;</span><span class="s2">:</span>
+					<span class="s1">card </span><span class="s2">= </span><span class="s0">new </span><span class="s1">SwapperCard</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">], </span><span class="s1">data</span><span class="s2">[</span><span class="s4">2</span><span class="s2">], </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">3</span><span class="s2">])); </span><span class="s0">break</span><span class="s2">;</span>
+				<span class="s0">case </span><span class="s3">&quot;ENERGYSTEAL&quot;</span><span class="s2">:</span>
+					<span class="s1">card </span><span class="s2">= </span><span class="s0">new </span><span class="s1">EnergyStealCard</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">], </span><span class="s1">data</span><span class="s2">[</span><span class="s4">2</span><span class="s2">], </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">3</span><span class="s2">]), </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">4</span><span class="s2">])); </span><span class="s0">break</span><span class="s2">;</span>
+				<span class="s0">case </span><span class="s3">&quot;STARTOVER&quot;</span><span class="s2">:</span>
+					<span class="s1">card </span><span class="s2">= </span><span class="s0">new </span><span class="s1">StartOverCard</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">], </span><span class="s1">data</span><span class="s2">[</span><span class="s4">2</span><span class="s2">], </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">3</span><span class="s2">]), </span><span class="s1">Boolean</span><span class="s2">.</span><span class="s1">parseBoolean</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">4</span><span class="s2">])); </span><span class="s0">break</span><span class="s2">;</span>
+				<span class="s0">case </span><span class="s3">&quot;SHIELD&quot;</span><span class="s2">:</span>
+					<span class="s1">card </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ShieldCard</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">], </span><span class="s1">data</span><span class="s2">[</span><span class="s4">2</span><span class="s2">], </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">3</span><span class="s2">])); </span><span class="s0">break</span><span class="s2">;</span>
+				<span class="s0">case </span><span class="s3">&quot;CONFUSION&quot;</span><span class="s2">:</span>
+					<span class="s1">card </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ConfusionCard</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">], </span><span class="s1">data</span><span class="s2">[</span><span class="s4">2</span><span class="s2">], </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">3</span><span class="s2">]), </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">4</span><span class="s2">])); </span><span class="s0">break</span><span class="s2">;</span>
+			<span class="s0">default</span><span class="s2">:</span>
+				<span class="s0">throw new </span><span class="s1">InvalidCSVFormat</span><span class="s2">(</span><span class="s3">&quot;Unknown card type: &quot; </span><span class="s2">+ </span><span class="s1">cardType</span><span class="s2">);</span>
+			<span class="s2">}</span>
+			
+			<span class="s1">cards</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">card</span><span class="s2">);</span>
+			
+		<span class="s2">}</span>
+
+		<span class="s1">br</span><span class="s2">.</span><span class="s1">close</span><span class="s2">();</span>
+
+		<span class="s0">return </span><span class="s1">cards</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s1">@SuppressWarnings</span><span class="s2">(</span><span class="s3">&quot;resource&quot;</span><span class="s2">)</span>
+	<span class="s0">public static </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Cell</span><span class="s2">&gt; </span><span class="s1">readCells</span><span class="s2">() </span><span class="s0">throws </span><span class="s1">IOException </span><span class="s2">{</span>
+		<span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Cell</span><span class="s2">&gt; </span><span class="s1">cells </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Cell</span><span class="s2">&gt;();</span>
+
+		<span class="s1">BufferedReader br </span><span class="s2">= </span><span class="s0">new </span><span class="s1">BufferedReader</span><span class="s2">(</span><span class="s0">new </span><span class="s1">FileReader</span><span class="s2">(</span><span class="s1">CELLS_FILE_NAME</span><span class="s2">));</span>
+
+		<span class="s0">while </span><span class="s2">(</span><span class="s1">br</span><span class="s2">.</span><span class="s1">ready</span><span class="s2">()) {</span>
+			<span class="s1">String nextLine </span><span class="s2">= </span><span class="s1">br</span><span class="s2">.</span><span class="s1">readLine</span><span class="s2">();</span>
+			<span class="s1">String</span><span class="s2">[] </span><span class="s1">data </span><span class="s2">= </span><span class="s1">nextLine</span><span class="s2">.</span><span class="s1">split</span><span class="s2">(</span><span class="s3">&quot;,&quot;</span><span class="s2">);</span>
+			
+
+			<span class="s0">if </span><span class="s2">(</span><span class="s1">data</span><span class="s2">.</span><span class="s1">length </span><span class="s2">!= </span><span class="s4">2 </span><span class="s2">&amp;&amp; </span><span class="s1">data</span><span class="s2">.</span><span class="s1">length </span><span class="s2">!= </span><span class="s4">3</span><span class="s2">)</span>
+				<span class="s0">throw new </span><span class="s1">InvalidCSVFormat</span><span class="s2">(</span><span class="s1">nextLine</span><span class="s2">);</span>
+			
+			<span class="s1">Cell cell</span><span class="s2">;</span>
+			
+			<span class="s0">if </span><span class="s2">(</span><span class="s1">data</span><span class="s2">.</span><span class="s1">length </span><span class="s2">== </span><span class="s4">2</span><span class="s2">) </span>
+				<span class="s1">cell </span><span class="s2">= </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">]) &gt; </span><span class="s4">0 </span><span class="s2">? </span><span class="s0">new </span><span class="s1">ConveyorBelt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">0</span><span class="s2">], </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">])) : </span><span class="s0">new </span><span class="s1">ContaminationSock</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">0</span><span class="s2">], </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">]));</span>
+				
+			<span class="s0">else </span>
+				<span class="s1">cell </span><span class="s2">= </span><span class="s0">new </span><span class="s1">DoorCell</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">0</span><span class="s2">], </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">]), </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">2</span><span class="s2">]));</span>
+			
+			<span class="s1">cells</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">cell</span><span class="s2">);</span>
+		<span class="s2">}</span>
+
+		<span class="s1">br</span><span class="s2">.</span><span class="s1">close</span><span class="s2">();</span>
+
+		<span class="s0">return </span><span class="s1">cells</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s1">@SuppressWarnings</span><span class="s2">(</span><span class="s3">&quot;resource&quot;</span><span class="s2">)</span>
+	<span class="s0">public static </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Monster</span><span class="s2">&gt; </span><span class="s1">readMonsters</span><span class="s2">() </span><span class="s0">throws </span><span class="s1">IOException </span><span class="s2">{</span>
+		<span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Monster</span><span class="s2">&gt; </span><span class="s1">monsters </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Monster</span><span class="s2">&gt;();</span>
+
+		<span class="s1">BufferedReader br </span><span class="s2">= </span><span class="s0">new </span><span class="s1">BufferedReader</span><span class="s2">(</span><span class="s0">new </span><span class="s1">FileReader</span><span class="s2">(</span><span class="s1">MONSTERS_FILE_NAME</span><span class="s2">));</span>
+
+		<span class="s0">while </span><span class="s2">(</span><span class="s1">br</span><span class="s2">.</span><span class="s1">ready</span><span class="s2">()) {</span>
+			<span class="s1">String nextLine </span><span class="s2">= </span><span class="s1">br</span><span class="s2">.</span><span class="s1">readLine</span><span class="s2">();</span>
+			<span class="s1">String</span><span class="s2">[] </span><span class="s1">data </span><span class="s2">= </span><span class="s1">nextLine</span><span class="s2">.</span><span class="s1">split</span><span class="s2">(</span><span class="s3">&quot;,&quot;</span><span class="s2">);</span>
+			
+
+			<span class="s0">if </span><span class="s2">(</span><span class="s1">data</span><span class="s2">.</span><span class="s1">length </span><span class="s2">!= </span><span class="s4">5</span><span class="s2">)</span>
+				<span class="s0">throw new </span><span class="s1">InvalidCSVFormat</span><span class="s2">(</span><span class="s1">nextLine</span><span class="s2">);</span>
+			
+			<span class="s1">String monsterType </span><span class="s2">= </span><span class="s1">data</span><span class="s2">[</span><span class="s4">0</span><span class="s2">];</span>
+			<span class="s1">Monster monster</span><span class="s2">;</span>
+			
+			<span class="s0">switch </span><span class="s2">(</span><span class="s1">monsterType</span><span class="s2">) {</span>
+				<span class="s0">case </span><span class="s3">&quot;DYNAMO&quot;</span><span class="s2">:</span>
+					<span class="s1">monster </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Dynamo</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">], </span><span class="s1">data</span><span class="s2">[</span><span class="s4">2</span><span class="s2">], </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">3</span><span class="s2">]), </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">4</span><span class="s2">])); </span><span class="s0">break</span><span class="s2">;</span>
+				<span class="s0">case </span><span class="s3">&quot;DASHER&quot;</span><span class="s2">:</span>
+					<span class="s1">monster </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Dasher</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">], </span><span class="s1">data</span><span class="s2">[</span><span class="s4">2</span><span class="s2">], </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">3</span><span class="s2">]), </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">4</span><span class="s2">])); </span><span class="s0">break</span><span class="s2">;</span>
+				<span class="s0">case </span><span class="s3">&quot;MULTITASKER&quot;</span><span class="s2">:</span>
+					<span class="s1">monster </span><span class="s2">= </span><span class="s0">new </span><span class="s1">MultiTasker</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">], </span><span class="s1">data</span><span class="s2">[</span><span class="s4">2</span><span class="s2">], </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">3</span><span class="s2">]), </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">4</span><span class="s2">])); </span><span class="s0">break</span><span class="s2">;</span>
+				<span class="s0">case </span><span class="s3">&quot;SCHEMER&quot;</span><span class="s2">:</span>
+					<span class="s1">monster </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Schemer</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">1</span><span class="s2">], </span><span class="s1">data</span><span class="s2">[</span><span class="s4">2</span><span class="s2">], </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">3</span><span class="s2">]), </span><span class="s1">Integer</span><span class="s2">.</span><span class="s1">parseInt</span><span class="s2">(</span><span class="s1">data</span><span class="s2">[</span><span class="s4">4</span><span class="s2">])); </span><span class="s0">break</span><span class="s2">;</span>
+			<span class="s0">default</span><span class="s2">:</span>
+				<span class="s0">throw new </span><span class="s1">InvalidCSVFormat</span><span class="s2">(</span><span class="s3">&quot;Unknown monster type: &quot; </span><span class="s2">+ </span><span class="s1">monsterType</span><span class="s2">);</span>
+			<span class="s2">}</span>
+			
+			<span class="s1">monsters</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">monster</span><span class="s2">);</span>
+			
+		<span class="s2">}</span>
+
+		<span class="s1">br</span><span class="s2">.</span><span class="s1">close</span><span class="s2">();</span>
+
+		<span class="s0">return </span><span class="s1">monsters</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+<span class="s2">}</span>
+</pre>
+</body>
+</html>

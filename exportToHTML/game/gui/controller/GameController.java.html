@@ -1,0 +1,286 @@
+<html>
+<head>
+<title>GameController.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #6aab73;}
+.s5 { color: #7a7e85;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+GameController.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">game</span><span class="s2">.</span><span class="s1">gui</span><span class="s2">.</span><span class="s1">controller</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">cells</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">monsters</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">javafx</span><span class="s2">.</span><span class="s1">fxml</span><span class="s2">.</span><span class="s1">FXML</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javafx</span><span class="s2">.</span><span class="s1">scene</span><span class="s2">.</span><span class="s1">control</span><span class="s2">.</span><span class="s1">Label</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javafx</span><span class="s2">.</span><span class="s1">scene</span><span class="s2">.</span><span class="s1">image</span><span class="s2">.</span><span class="s1">Image</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javafx</span><span class="s2">.</span><span class="s1">scene</span><span class="s2">.</span><span class="s1">image</span><span class="s2">.</span><span class="s1">ImageView</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javafx</span><span class="s2">.</span><span class="s1">scene</span><span class="s2">.</span><span class="s1">layout</span><span class="s2">.*;</span>
+<span class="s0">import </span><span class="s1">javafx</span><span class="s2">.</span><span class="s1">scene</span><span class="s2">.</span><span class="s1">paint</span><span class="s2">.</span><span class="s1">Color</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javafx</span><span class="s2">.</span><span class="s1">scene</span><span class="s2">.</span><span class="s1">shape</span><span class="s2">.</span><span class="s1">Rectangle</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">javafx</span><span class="s2">.</span><span class="s1">geometry</span><span class="s2">.</span><span class="s1">Pos</span><span class="s2">;</span>
+
+<span class="s0">public class </span><span class="s1">GameController </span><span class="s2">{</span>
+
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">VBox playerPanel</span><span class="s2">;</span>
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">VBox opponentPanel</span><span class="s2">;</span>
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">StackPane boardContainer</span><span class="s2">;</span>
+    <span class="s1">@FXML</span>
+    <span class="s0">private </span><span class="s1">Label statusLabel</span><span class="s2">;</span>
+
+    <span class="s0">private </span><span class="s1">Game game</span><span class="s2">;</span>
+    <span class="s0">private </span><span class="s1">StackPane</span><span class="s2">[][] </span><span class="s1">cellViews </span><span class="s2">= </span><span class="s0">new </span><span class="s1">StackPane</span><span class="s2">[</span><span class="s3">10</span><span class="s2">][</span><span class="s3">10</span><span class="s2">];</span>
+
+    <span class="s0">public void </span><span class="s1">initGame</span><span class="s2">(</span><span class="s1">Game game</span><span class="s2">) {</span>
+        <span class="s0">this</span><span class="s2">.</span><span class="s1">game </span><span class="s2">= </span><span class="s1">game</span><span class="s2">;</span>
+        <span class="s1">buildBoard</span><span class="s2">();</span>
+        <span class="s1">buildPlayerPanels</span><span class="s2">();</span>
+        <span class="s1">statusLabel</span><span class="s2">.</span><span class="s1">setText</span><span class="s2">(</span><span class="s1">game</span><span class="s2">.</span><span class="s1">getCurrent</span><span class="s2">().</span><span class="s1">getName</span><span class="s2">() + </span><span class="s4">&quot;'s turn!&quot;</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">buildBoard</span><span class="s2">() {</span>
+        <span class="s1">GridPane grid </span><span class="s2">= </span><span class="s0">new </span><span class="s1">GridPane</span><span class="s2">();</span>
+        <span class="s1">grid</span><span class="s2">.</span><span class="s1">setHgap</span><span class="s2">(</span><span class="s3">2</span><span class="s2">);</span>
+        <span class="s1">grid</span><span class="s2">.</span><span class="s1">setVgap</span><span class="s2">(</span><span class="s3">2</span><span class="s2">);</span>
+        <span class="s1">grid</span><span class="s2">.</span><span class="s1">setAlignment</span><span class="s2">(</span><span class="s1">Pos</span><span class="s2">.</span><span class="s1">CENTER</span><span class="s2">);</span>
+
+        <span class="s1">Cell</span><span class="s2">[][] </span><span class="s1">cells </span><span class="s2">= </span><span class="s1">game</span><span class="s2">.</span><span class="s1">getBoard</span><span class="s2">().</span><span class="s1">getBoardCells</span><span class="s2">();</span>
+
+        <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">row </span><span class="s2">= </span><span class="s3">0</span><span class="s2">; </span><span class="s1">row </span><span class="s2">&lt; </span><span class="s3">10</span><span class="s2">; </span><span class="s1">row</span><span class="s2">++) {</span>
+            <span class="s0">for </span><span class="s2">(</span><span class="s0">int </span><span class="s1">col </span><span class="s2">= </span><span class="s3">0</span><span class="s2">; </span><span class="s1">col </span><span class="s2">&lt; </span><span class="s3">10</span><span class="s2">; </span><span class="s1">col</span><span class="s2">++) {</span>
+                <span class="s1">Cell cell </span><span class="s2">= </span><span class="s1">cells</span><span class="s2">[</span><span class="s1">row</span><span class="s2">][</span><span class="s1">col</span><span class="s2">];</span>
+                <span class="s0">int </span><span class="s1">index </span><span class="s2">= </span><span class="s1">linearIndex</span><span class="s2">(</span><span class="s1">row</span><span class="s2">, </span><span class="s1">col</span><span class="s2">);</span>
+                <span class="s1">StackPane cellPane </span><span class="s2">= </span><span class="s1">createCellPane</span><span class="s2">(</span><span class="s1">cell</span><span class="s2">, </span><span class="s1">index</span><span class="s2">);</span>
+                <span class="s1">cellViews</span><span class="s2">[</span><span class="s1">row</span><span class="s2">][</span><span class="s1">col</span><span class="s2">] = </span><span class="s1">cellPane</span><span class="s2">;</span>
+                <span class="s5">// row 0 of board = bottom of screen, so display inverted</span>
+                <span class="s1">grid</span><span class="s2">.</span><span class="s1">add</span><span class="s2">(</span><span class="s1">cellPane</span><span class="s2">, </span><span class="s1">col</span><span class="s2">, </span><span class="s3">9 </span><span class="s2">- </span><span class="s1">row</span><span class="s2">);</span>
+            <span class="s2">}</span>
+        <span class="s2">}</span>
+
+        <span class="s1">boardContainer</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">grid</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s5">// Convert 2D array position back to linear board index</span>
+    <span class="s0">private int </span><span class="s1">linearIndex</span><span class="s2">(</span><span class="s0">int </span><span class="s1">row</span><span class="s2">, </span><span class="s0">int </span><span class="s1">col</span><span class="s2">) {</span>
+        <span class="s5">// odd rows are reversed in the snake pattern</span>
+        <span class="s0">int </span><span class="s1">actualCol </span><span class="s2">= (</span><span class="s1">row </span><span class="s2">% </span><span class="s3">2 </span><span class="s2">== </span><span class="s3">0</span><span class="s2">) ? </span><span class="s1">col </span><span class="s2">: (</span><span class="s3">9 </span><span class="s2">- </span><span class="s1">col</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s1">row </span><span class="s2">* </span><span class="s3">10 </span><span class="s2">+ </span><span class="s1">actualCol</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">StackPane createCellPane</span><span class="s2">(</span><span class="s1">Cell cell</span><span class="s2">, </span><span class="s0">int </span><span class="s1">index</span><span class="s2">) {</span>
+        <span class="s1">StackPane pane </span><span class="s2">= </span><span class="s0">new </span><span class="s1">StackPane</span><span class="s2">();</span>
+        <span class="s1">pane</span><span class="s2">.</span><span class="s1">setPrefSize</span><span class="s2">(</span><span class="s3">64</span><span class="s2">, </span><span class="s3">64</span><span class="s2">);</span>
+
+        <span class="s1">String imagePath </span><span class="s2">= </span><span class="s1">getImagePath</span><span class="s2">(</span><span class="s1">cell</span><span class="s2">, </span><span class="s1">index</span><span class="s2">);</span>
+
+        <span class="s1">ImageView imgView </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ImageView</span><span class="s2">();</span>
+        <span class="s1">imgView</span><span class="s2">.</span><span class="s1">setFitWidth</span><span class="s2">(</span><span class="s3">64</span><span class="s2">);</span>
+        <span class="s1">imgView</span><span class="s2">.</span><span class="s1">setFitHeight</span><span class="s2">(</span><span class="s3">64</span><span class="s2">);</span>
+        <span class="s1">imgView</span><span class="s2">.</span><span class="s1">setPreserveRatio</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">Image img </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Image</span><span class="s2">(</span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResourceAsStream</span><span class="s2">(</span><span class="s1">imagePath</span><span class="s2">));</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">img</span><span class="s2">.</span><span class="s1">isError</span><span class="s2">()) </span><span class="s0">throw new </span><span class="s1">Exception</span><span class="s2">(</span><span class="s4">&quot;Image error&quot;</span><span class="s2">);</span>
+            <span class="s1">imgView</span><span class="s2">.</span><span class="s1">setImage</span><span class="s2">(</span><span class="s1">img</span><span class="s2">);</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s5">// fallback colored rectangle</span>
+            <span class="s1">Rectangle fallback </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Rectangle</span><span class="s2">(</span><span class="s3">64</span><span class="s2">, </span><span class="s3">64</span><span class="s2">);</span>
+            <span class="s1">fallback</span><span class="s2">.</span><span class="s1">setArcWidth</span><span class="s2">(</span><span class="s3">12</span><span class="s2">);</span>
+            <span class="s1">fallback</span><span class="s2">.</span><span class="s1">setArcHeight</span><span class="s2">(</span><span class="s3">12</span><span class="s2">);</span>
+            <span class="s1">fallback</span><span class="s2">.</span><span class="s1">setFill</span><span class="s2">(</span><span class="s1">getFallbackColor</span><span class="s2">(</span><span class="s1">cell</span><span class="s2">));</span>
+            <span class="s1">pane</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">fallback</span><span class="s2">);</span>
+            <span class="s1">Label idxLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Label</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">index</span><span class="s2">));</span>
+            <span class="s1">idxLabel</span><span class="s2">.</span><span class="s1">setStyle</span><span class="s2">(</span><span class="s4">&quot;-fx-text-fill: white; -fx-font-size: 8px;&quot;</span><span class="s2">);</span>
+            <span class="s1">StackPane</span><span class="s2">.</span><span class="s1">setAlignment</span><span class="s2">(</span><span class="s1">idxLabel</span><span class="s2">, </span><span class="s1">Pos</span><span class="s2">.</span><span class="s1">TOP_LEFT</span><span class="s2">);</span>
+            <span class="s1">pane</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">idxLabel</span><span class="s2">);</span>
+            <span class="s0">return </span><span class="s1">pane</span><span class="s2">;</span>
+        <span class="s2">}</span>
+
+        <span class="s5">// Clip to rounded corners</span>
+        <span class="s1">Rectangle clip </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Rectangle</span><span class="s2">(</span><span class="s3">64</span><span class="s2">, </span><span class="s3">64</span><span class="s2">);</span>
+        <span class="s1">clip</span><span class="s2">.</span><span class="s1">setArcWidth</span><span class="s2">(</span><span class="s3">14</span><span class="s2">);</span>
+        <span class="s1">clip</span><span class="s2">.</span><span class="s1">setArcHeight</span><span class="s2">(</span><span class="s3">14</span><span class="s2">);</span>
+        <span class="s1">imgView</span><span class="s2">.</span><span class="s1">setClip</span><span class="s2">(</span><span class="s1">clip</span><span class="s2">);</span>
+
+        <span class="s5">// Index label top-left</span>
+        <span class="s1">Label idxLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Label</span><span class="s2">(</span><span class="s1">String</span><span class="s2">.</span><span class="s1">valueOf</span><span class="s2">(</span><span class="s1">index</span><span class="s2">));</span>
+        <span class="s1">idxLabel</span><span class="s2">.</span><span class="s1">setStyle</span><span class="s2">(</span>
+                <span class="s4">&quot;-fx-text-fill: white; -fx-font-size: 8px;&quot; </span><span class="s2">+</span>
+                        <span class="s4">&quot;-fx-background-color: rgba(0,0,0,0.55); -fx-padding: 1 2 1 2;&quot;</span>
+        <span class="s2">);</span>
+        <span class="s1">StackPane</span><span class="s2">.</span><span class="s1">setAlignment</span><span class="s2">(</span><span class="s1">idxLabel</span><span class="s2">, </span><span class="s1">Pos</span><span class="s2">.</span><span class="s1">TOP_LEFT</span><span class="s2">);</span>
+
+        <span class="s1">pane</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">().</span><span class="s1">addAll</span><span class="s2">(</span><span class="s1">imgView</span><span class="s2">, </span><span class="s1">idxLabel</span><span class="s2">);</span>
+
+        <span class="s5">// Door energy value bottom-right</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">DoorCell</span><span class="s2">) {</span>
+            <span class="s1">DoorCell door </span><span class="s2">= (</span><span class="s1">DoorCell</span><span class="s2">) </span><span class="s1">cell</span><span class="s2">;</span>
+            <span class="s1">Label energyLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Label</span><span class="s2">(</span>
+                    <span class="s2">(</span><span class="s1">door</span><span class="s2">.</span><span class="s1">getEnergy</span><span class="s2">() &gt; </span><span class="s3">0 </span><span class="s2">? </span><span class="s4">&quot;+&quot; </span><span class="s2">: </span><span class="s4">&quot;&quot;</span><span class="s2">) + </span><span class="s1">door</span><span class="s2">.</span><span class="s1">getEnergy</span><span class="s2">()</span>
+            <span class="s2">);</span>
+            <span class="s1">energyLabel</span><span class="s2">.</span><span class="s1">setStyle</span><span class="s2">(</span>
+                    <span class="s4">&quot;-fx-text-fill: #FFD700; -fx-font-size: 8px;&quot; </span><span class="s2">+</span>
+                            <span class="s4">&quot;-fx-background-color: rgba(0,0,0,0.55); -fx-padding: 1 2 1 2;&quot;</span>
+            <span class="s2">);</span>
+            <span class="s1">StackPane</span><span class="s2">.</span><span class="s1">setAlignment</span><span class="s2">(</span><span class="s1">energyLabel</span><span class="s2">, </span><span class="s1">Pos</span><span class="s2">.</span><span class="s1">BOTTOM_RIGHT</span><span class="s2">);</span>
+            <span class="s1">pane</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">energyLabel</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s5">// Monster cell: show stationed monster name</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">MonsterCell</span><span class="s2">) {</span>
+            <span class="s1">MonsterCell mc </span><span class="s2">= (</span><span class="s1">MonsterCell</span><span class="s2">) </span><span class="s1">cell</span><span class="s2">;</span>
+            <span class="s1">Label monsterLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Label</span><span class="s2">(</span><span class="s1">mc</span><span class="s2">.</span><span class="s1">getCellMonster</span><span class="s2">().</span><span class="s1">getName</span><span class="s2">());</span>
+            <span class="s1">monsterLabel</span><span class="s2">.</span><span class="s1">setStyle</span><span class="s2">(</span>
+                    <span class="s4">&quot;-fx-text-fill: #00FF99; -fx-font-size: 7px;&quot; </span><span class="s2">+</span>
+                            <span class="s4">&quot;-fx-background-color: rgba(0,0,0,0.55); -fx-padding: 1 2 1 2;&quot;</span>
+            <span class="s2">);</span>
+            <span class="s1">StackPane</span><span class="s2">.</span><span class="s1">setAlignment</span><span class="s2">(</span><span class="s1">monsterLabel</span><span class="s2">, </span><span class="s1">Pos</span><span class="s2">.</span><span class="s1">BOTTOM_LEFT</span><span class="s2">);</span>
+            <span class="s1">pane</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">().</span><span class="s1">add</span><span class="s2">(</span><span class="s1">monsterLabel</span><span class="s2">);</span>
+        <span class="s2">}</span>
+
+        <span class="s0">return </span><span class="s1">pane</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">String getImagePath</span><span class="s2">(</span><span class="s1">Cell cell</span><span class="s2">, </span><span class="s0">int </span><span class="s1">index</span><span class="s2">) {</span>
+        <span class="s5">// Winning cell</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">index </span><span class="s2">== </span><span class="s3">99</span><span class="s2">) </span><span class="s0">return </span><span class="s4">&quot;/images/boo's door.png&quot;</span><span class="s2">;</span>
+
+        <span class="s5">// Check cell type using instanceof on the actual engine object</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">MonsterCell</span><span class="s2">) {</span>
+            <span class="s1">MonsterCell mc </span><span class="s2">= (</span><span class="s1">MonsterCell</span><span class="s2">) </span><span class="s1">cell</span><span class="s2">;</span>
+            <span class="s0">return </span><span class="s1">getMonsterImagePath</span><span class="s2">(</span><span class="s1">mc</span><span class="s2">.</span><span class="s1">getCellMonster</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">CardCell</span><span class="s2">) </span><span class="s0">return </span><span class="s4">&quot;/images/cards.png&quot;</span><span class="s2">;</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">ContaminationSock</span><span class="s2">) </span><span class="s0">return </span><span class="s4">&quot;/images/contamination sock.png&quot;</span><span class="s2">;</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">ConveyorBelt</span><span class="s2">) </span><span class="s0">return </span><span class="s4">&quot;/images/gopass.png&quot;</span><span class="s2">;</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">DoorCell</span><span class="s2">) {</span>
+            <span class="s1">DoorCell door </span><span class="s2">= (</span><span class="s1">DoorCell</span><span class="s2">) </span><span class="s1">cell</span><span class="s2">;</span>
+            <span class="s0">if </span><span class="s2">(</span><span class="s1">index </span><span class="s2">== </span><span class="s3">99</span><span class="s2">) </span><span class="s0">return </span><span class="s4">&quot;/images/boo's door.png&quot;</span><span class="s2">;</span>
+            <span class="s0">return </span><span class="s1">door</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">() == </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER</span>
+                    <span class="s2">? </span><span class="s4">&quot;/images/scarer cell.png&quot;</span>
+                    <span class="s2">: </span><span class="s4">&quot;/images/laugher cell.png&quot;</span><span class="s2">;</span>
+        <span class="s2">}</span>
+        <span class="s5">// Normal cell</span>
+        <span class="s0">return </span><span class="s4">&quot;/images/normal cell.png&quot;</span><span class="s2">;</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">String getMonsterImagePath</span><span class="s2">(</span><span class="s1">Monster monster</span><span class="s2">) {</span>
+        <span class="s1">String type </span><span class="s2">= </span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getSimpleName</span><span class="s2">().</span><span class="s1">toLowerCase</span><span class="s2">();</span>
+        <span class="s1">Role role </span><span class="s2">= </span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">();</span>
+
+        <span class="s0">switch </span><span class="s2">(</span><span class="s1">type</span><span class="s2">) {</span>
+            <span class="s0">case </span><span class="s4">&quot;dasher&quot;</span><span class="s2">:</span>
+                <span class="s0">return </span><span class="s1">role </span><span class="s2">== </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER </span><span class="s2">?</span>
+                        <span class="s4">&quot;/images/dasher scarer.png&quot; </span><span class="s2">: </span><span class="s4">&quot;/images/dahser laugher.png&quot;</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s4">&quot;dynamo&quot;</span><span class="s2">:</span>
+                <span class="s0">return </span><span class="s1">role </span><span class="s2">== </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER </span><span class="s2">?</span>
+                        <span class="s4">&quot;/images/dynamo scarer.png&quot; </span><span class="s2">: </span><span class="s4">&quot;/images/dynamo laugher.png&quot;</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s4">&quot;multitasker&quot;</span><span class="s2">:</span>
+                <span class="s0">return </span><span class="s1">role </span><span class="s2">== </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER </span><span class="s2">?</span>
+                        <span class="s4">&quot;/images/multitasker scarer.png&quot; </span><span class="s2">: </span><span class="s4">&quot;/images/multitastker laugher.png&quot;</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s4">&quot;schemer&quot;</span><span class="s2">:</span>
+                <span class="s0">return </span><span class="s1">role </span><span class="s2">== </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER </span><span class="s2">?</span>
+                        <span class="s4">&quot;/images/schemer1.png&quot; </span><span class="s2">: </span><span class="s4">&quot;/images/schemer2.png&quot;</span><span class="s2">;</span>
+            <span class="s0">default</span><span class="s2">:</span>
+                <span class="s0">return </span><span class="s4">&quot;/images/normal cell.png&quot;</span><span class="s2">;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">Color getFallbackColor</span><span class="s2">(</span><span class="s1">Cell cell</span><span class="s2">) {</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">DoorCell</span><span class="s2">) {</span>
+            <span class="s1">DoorCell door </span><span class="s2">= (</span><span class="s1">DoorCell</span><span class="s2">) </span><span class="s1">cell</span><span class="s2">;</span>
+            <span class="s0">return </span><span class="s1">door</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">() == </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER</span>
+                    <span class="s2">? </span><span class="s1">Color</span><span class="s2">.</span><span class="s1">web</span><span class="s2">(</span><span class="s4">&quot;#2E4A7A&quot;</span><span class="s2">) : </span><span class="s1">Color</span><span class="s2">.</span><span class="s1">web</span><span class="s2">(</span><span class="s4">&quot;#7A4A1E&quot;</span><span class="s2">);</span>
+        <span class="s2">}</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">CardCell</span><span class="s2">) </span><span class="s0">return </span><span class="s1">Color</span><span class="s2">.</span><span class="s1">web</span><span class="s2">(</span><span class="s4">&quot;#4A2E7A&quot;</span><span class="s2">);</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">MonsterCell</span><span class="s2">) </span><span class="s0">return </span><span class="s1">Color</span><span class="s2">.</span><span class="s1">web</span><span class="s2">(</span><span class="s4">&quot;#1A5C3A&quot;</span><span class="s2">);</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">ConveyorBelt</span><span class="s2">) </span><span class="s0">return </span><span class="s1">Color</span><span class="s2">.</span><span class="s1">web</span><span class="s2">(</span><span class="s4">&quot;#5C4A1A&quot;</span><span class="s2">);</span>
+        <span class="s0">if </span><span class="s2">(</span><span class="s1">cell </span><span class="s0">instanceof </span><span class="s1">ContaminationSock</span><span class="s2">) </span><span class="s0">return </span><span class="s1">Color</span><span class="s2">.</span><span class="s1">web</span><span class="s2">(</span><span class="s4">&quot;#5C1A1A&quot;</span><span class="s2">);</span>
+        <span class="s0">return </span><span class="s1">Color</span><span class="s2">.</span><span class="s1">web</span><span class="s2">(</span><span class="s4">&quot;#1E3A5C&quot;</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">buildPlayerPanels</span><span class="s2">() {</span>
+        <span class="s1">buildPanel</span><span class="s2">(</span><span class="s1">playerPanel</span><span class="s2">, </span><span class="s1">game</span><span class="s2">.</span><span class="s1">getPlayer</span><span class="s2">(), </span><span class="s4">&quot;PLAYER&quot;</span><span class="s2">);</span>
+        <span class="s1">buildPanel</span><span class="s2">(</span><span class="s1">opponentPanel</span><span class="s2">, </span><span class="s1">game</span><span class="s2">.</span><span class="s1">getOpponent</span><span class="s2">(), </span><span class="s4">&quot;OPPONENT&quot;</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private void </span><span class="s1">buildPanel</span><span class="s2">(</span><span class="s1">VBox panel</span><span class="s2">, </span><span class="s1">Monster monster</span><span class="s2">, </span><span class="s1">String title</span><span class="s2">) {</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">().</span><span class="s1">clear</span><span class="s2">();</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">setMinWidth</span><span class="s2">(</span><span class="s3">200</span><span class="s2">);</span>
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">setMaxWidth</span><span class="s2">(</span><span class="s3">220</span><span class="s2">);</span>
+
+        <span class="s1">Label titleLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Label</span><span class="s2">(</span><span class="s1">title</span><span class="s2">);</span>
+        <span class="s1">titleLabel</span><span class="s2">.</span><span class="s1">setStyle</span><span class="s2">(</span><span class="s4">&quot;-fx-text-fill: #FFD700; -fx-font-size: 14px; -fx-font-weight: bold;&quot;</span><span class="s2">);</span>
+
+        <span class="s1">ImageView avatar </span><span class="s2">= </span><span class="s0">new </span><span class="s1">ImageView</span><span class="s2">();</span>
+        <span class="s1">avatar</span><span class="s2">.</span><span class="s1">setFitWidth</span><span class="s2">(</span><span class="s3">150</span><span class="s2">);</span>
+        <span class="s1">avatar</span><span class="s2">.</span><span class="s1">setFitHeight</span><span class="s2">(</span><span class="s3">150</span><span class="s2">);</span>
+        <span class="s1">avatar</span><span class="s2">.</span><span class="s1">setPreserveRatio</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+        <span class="s1">avatar</span><span class="s2">.</span><span class="s1">setSmooth</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+
+        <span class="s0">try </span><span class="s2">{</span>
+            <span class="s1">Image img </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Image</span><span class="s2">(</span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResourceAsStream</span><span class="s2">(</span><span class="s1">getMonsterNobgPath</span><span class="s2">(</span><span class="s1">monster</span><span class="s2">)));</span>
+            <span class="s1">avatar</span><span class="s2">.</span><span class="s1">setImage</span><span class="s2">(</span><span class="s1">img</span><span class="s2">);</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Avatar loaded: &quot; </span><span class="s2">+ !</span><span class="s1">img</span><span class="s2">.</span><span class="s1">isError</span><span class="s2">());</span>
+        <span class="s2">} </span><span class="s0">catch </span><span class="s2">(</span><span class="s1">Exception e</span><span class="s2">) {</span>
+            <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Avatar error: &quot; </span><span class="s2">+ </span><span class="s1">e</span><span class="s2">.</span><span class="s1">getMessage</span><span class="s2">());</span>
+        <span class="s2">}</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Loading image: &quot; </span><span class="s2">+ </span><span class="s1">getMonsterNobgPath</span><span class="s2">(</span><span class="s1">monster</span><span class="s2">));</span>
+        <span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s4">&quot;Stream: &quot; </span><span class="s2">+ </span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getResourceAsStream</span><span class="s2">(</span><span class="s1">getMonsterNobgPath</span><span class="s2">(</span><span class="s1">monster</span><span class="s2">)));</span>
+
+        <span class="s1">Label nameLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Label</span><span class="s2">(</span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">());</span>
+        <span class="s1">nameLabel</span><span class="s2">.</span><span class="s1">setStyle</span><span class="s2">(</span><span class="s4">&quot;-fx-text-fill: white; -fx-font-size: 13px; -fx-font-weight: bold;&quot;</span><span class="s2">);</span>
+        <span class="s1">nameLabel</span><span class="s2">.</span><span class="s1">setWrapText</span><span class="s2">(</span><span class="s0">true</span><span class="s2">);</span>
+
+        <span class="s1">Label typeLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Label</span><span class="s2">(</span><span class="s4">&quot;Type: &quot; </span><span class="s2">+ </span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getSimpleName</span><span class="s2">());</span>
+        <span class="s1">typeLabel</span><span class="s2">.</span><span class="s1">setStyle</span><span class="s2">(</span><span class="s4">&quot;-fx-text-fill: #ccccee; -fx-font-size: 11px;&quot;</span><span class="s2">);</span>
+
+        <span class="s1">Label roleLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Label</span><span class="s2">(</span><span class="s4">&quot;Role: &quot; </span><span class="s2">+ </span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">());</span>
+        <span class="s1">roleLabel</span><span class="s2">.</span><span class="s1">setStyle</span><span class="s2">(</span><span class="s4">&quot;-fx-text-fill: #ccccee; -fx-font-size: 11px;&quot;</span><span class="s2">);</span>
+
+        <span class="s1">Label energyLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Label</span><span class="s2">(</span><span class="s4">&quot;⚡ Energy: &quot; </span><span class="s2">+ </span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getEnergy</span><span class="s2">());</span>
+        <span class="s1">energyLabel</span><span class="s2">.</span><span class="s1">setStyle</span><span class="s2">(</span><span class="s4">&quot;-fx-text-fill: #00FF99; -fx-font-size: 12px; -fx-font-weight: bold;&quot;</span><span class="s2">);</span>
+
+        <span class="s1">Label posLabel </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Label</span><span class="s2">(</span><span class="s4">&quot;📍 Position: &quot; </span><span class="s2">+ </span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getPosition</span><span class="s2">());</span>
+        <span class="s1">posLabel</span><span class="s2">.</span><span class="s1">setStyle</span><span class="s2">(</span><span class="s4">&quot;-fx-text-fill: #ccccee; -fx-font-size: 11px;&quot;</span><span class="s2">);</span>
+
+        <span class="s1">panel</span><span class="s2">.</span><span class="s1">getChildren</span><span class="s2">().</span><span class="s1">addAll</span><span class="s2">(</span><span class="s1">titleLabel</span><span class="s2">, </span><span class="s1">avatar</span><span class="s2">, </span><span class="s1">nameLabel</span><span class="s2">, </span><span class="s1">typeLabel</span><span class="s2">, </span><span class="s1">roleLabel</span><span class="s2">, </span><span class="s1">energyLabel</span><span class="s2">, </span><span class="s1">posLabel</span><span class="s2">);</span>
+    <span class="s2">}</span>
+
+    <span class="s0">private </span><span class="s1">String getMonsterNobgPath</span><span class="s2">(</span><span class="s1">Monster monster</span><span class="s2">) {</span>
+        <span class="s1">String type </span><span class="s2">= </span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getClass</span><span class="s2">().</span><span class="s1">getSimpleName</span><span class="s2">().</span><span class="s1">toLowerCase</span><span class="s2">();</span>
+        <span class="s1">Role role </span><span class="s2">= </span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">();</span>
+        <span class="s0">switch </span><span class="s2">(</span><span class="s1">type</span><span class="s2">) {</span>
+            <span class="s0">case </span><span class="s4">&quot;dasher&quot;</span><span class="s2">:</span>
+                <span class="s0">return </span><span class="s1">role </span><span class="s2">== </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER </span><span class="s2">?</span>
+                        <span class="s4">&quot;/images/dasher scarer_nobg.png&quot; </span><span class="s2">: </span><span class="s4">&quot;/images/dasher laugher_nobg.png&quot;</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s4">&quot;dynamo&quot;</span><span class="s2">:</span>
+                <span class="s0">return </span><span class="s1">role </span><span class="s2">== </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER </span><span class="s2">?</span>
+                        <span class="s4">&quot;/images/dynamo scarer_nobg.png&quot; </span><span class="s2">: </span><span class="s4">&quot;/images/dynamo laugher_nobg.png&quot;</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s4">&quot;multitasker&quot;</span><span class="s2">:</span>
+                <span class="s0">return </span><span class="s1">role </span><span class="s2">== </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER </span><span class="s2">?</span>
+                        <span class="s4">&quot;/images/multitasker scarer_nobg.png&quot; </span><span class="s2">: </span><span class="s4">&quot;/images/multitasker laugher_nobg.png&quot;</span><span class="s2">;</span>
+            <span class="s0">case </span><span class="s4">&quot;schemer&quot;</span><span class="s2">:</span>
+                <span class="s0">return </span><span class="s1">role </span><span class="s2">== </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER </span><span class="s2">?</span>
+                        <span class="s4">&quot;/images/schemer1_nobg.png&quot; </span><span class="s2">: </span><span class="s4">&quot;/images/schemer2_nobg.png&quot;</span><span class="s2">;</span>
+            <span class="s0">default</span><span class="s2">:</span>
+                <span class="s0">return </span><span class="s4">&quot;/images/normal cell.png&quot;</span><span class="s2">;</span>
+        <span class="s2">}</span>
+    <span class="s2">}</span>
+<span class="s2">}</span></pre>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<html>
+<head>
+<title>Game.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #2aacb8;}
+.s4 { color: #6aab73;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Game.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">io</span><span class="s2">.</span><span class="s1">IOException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">ArrayList</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Collections</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">java</span><span class="s2">.</span><span class="s1">util</span><span class="s2">.</span><span class="s1">Random</span><span class="s2">;</span>
+
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">dataloader</span><span class="s2">.</span><span class="s1">DataLoader</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">InvalidMoveException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">exceptions</span><span class="s2">.</span><span class="s1">OutOfEnergyException</span><span class="s2">;</span>
+<span class="s0">import </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">.</span><span class="s1">monsters</span><span class="s2">.*;</span>
+
+<span class="s0">public class </span><span class="s1">Game </span><span class="s2">{</span>
+	<span class="s0">private </span><span class="s1">Board board</span><span class="s2">;</span>
+	<span class="s0">private </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Monster</span><span class="s2">&gt; </span><span class="s1">allMonsters</span><span class="s2">; </span>
+	<span class="s0">private </span><span class="s1">Monster player</span><span class="s2">;</span>
+	<span class="s0">private </span><span class="s1">Monster opponent</span><span class="s2">;</span>
+	<span class="s0">private </span><span class="s1">Monster current</span><span class="s2">;</span>
+	
+	<span class="s0">public </span><span class="s1">Game</span><span class="s2">(</span><span class="s1">Role playerRole</span><span class="s2">) </span><span class="s0">throws </span><span class="s1">IOException </span><span class="s2">{</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">board </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Board</span><span class="s2">(</span><span class="s1">DataLoader</span><span class="s2">.</span><span class="s1">readCards</span><span class="s2">());</span>
+		
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">allMonsters </span><span class="s2">= </span><span class="s1">DataLoader</span><span class="s2">.</span><span class="s1">readMonsters</span><span class="s2">();</span>
+		
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">player </span><span class="s2">= </span><span class="s1">selectRandomMonsterByRole</span><span class="s2">(</span><span class="s1">playerRole</span><span class="s2">);</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">opponent </span><span class="s2">= </span><span class="s1">selectRandomMonsterByRole</span><span class="s2">(</span><span class="s1">playerRole </span><span class="s2">== </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER </span><span class="s2">? </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">LAUGHER </span><span class="s2">: </span><span class="s1">Role</span><span class="s2">.</span><span class="s1">SCARER</span><span class="s2">);</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">current </span><span class="s2">= </span><span class="s1">player</span><span class="s2">;</span>
+		
+		<span class="s1">allMonsters</span><span class="s2">.</span><span class="s1">remove</span><span class="s2">(</span><span class="s1">player</span><span class="s2">);</span>
+		<span class="s1">allMonsters</span><span class="s2">.</span><span class="s1">remove</span><span class="s2">(</span><span class="s1">opponent</span><span class="s2">);</span>
+		
+		<span class="s1">Board</span><span class="s2">.</span><span class="s1">setStationedMonsters</span><span class="s2">(</span><span class="s1">allMonsters</span><span class="s2">);</span>
+		<span class="s1">board</span><span class="s2">.</span><span class="s1">initializeBoard</span><span class="s2">(</span><span class="s1">DataLoader</span><span class="s2">.</span><span class="s1">readCells</span><span class="s2">());</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public </span><span class="s1">Board getBoard</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">board</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public </span><span class="s1">ArrayList</span><span class="s2">&lt;</span><span class="s1">Monster</span><span class="s2">&gt; </span><span class="s1">getAllMonsters</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">allMonsters</span><span class="s2">; </span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public </span><span class="s1">Monster getPlayer</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">player</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public </span><span class="s1">Monster getOpponent</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">opponent</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public </span><span class="s1">Monster getCurrent</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">current</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public void </span><span class="s1">setCurrent</span><span class="s2">(</span><span class="s1">Monster current</span><span class="s2">) {</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">current </span><span class="s2">= </span><span class="s1">current</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">private </span><span class="s1">Monster selectRandomMonsterByRole</span><span class="s2">(</span><span class="s1">Role role</span><span class="s2">) {</span>
+		<span class="s1">Collections</span><span class="s2">.</span><span class="s1">shuffle</span><span class="s2">(</span><span class="s1">allMonsters</span><span class="s2">);</span>
+	    <span class="s0">return </span><span class="s1">allMonsters</span><span class="s2">.</span><span class="s1">stream</span><span class="s2">()</span>
+	    		<span class="s2">.</span><span class="s1">filter</span><span class="s2">(</span><span class="s1">m -&gt; m</span><span class="s2">.</span><span class="s1">getRole</span><span class="s2">() == </span><span class="s1">role</span><span class="s2">)</span>
+	    		<span class="s2">.</span><span class="s1">findFirst</span><span class="s2">()</span>
+	    		<span class="s2">.</span><span class="s1">orElse</span><span class="s2">(</span><span class="s0">null</span><span class="s2">);</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">private </span><span class="s1">Monster getCurrentOpponent</span><span class="s2">() {</span>
+		<span class="s0">return </span><span class="s1">current </span><span class="s2">== </span><span class="s1">player </span><span class="s2">? </span><span class="s1">opponent </span><span class="s2">: </span><span class="s1">player</span><span class="s2">;</span>
+	<span class="s2">}</span>
+
+	<span class="s0">private int </span><span class="s1">rollDice</span><span class="s2">() {</span>
+		<span class="s1">Random rand </span><span class="s2">= </span><span class="s0">new </span><span class="s1">Random</span><span class="s2">();</span>
+		<span class="s0">return </span><span class="s1">rand</span><span class="s2">.</span><span class="s1">nextInt</span><span class="s2">(</span><span class="s3">6</span><span class="s2">) + </span><span class="s3">1</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public void </span><span class="s1">usePowerup</span><span class="s2">() </span><span class="s0">throws </span><span class="s1">OutOfEnergyException </span><span class="s2">{</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">current</span><span class="s2">.</span><span class="s1">getEnergy</span><span class="s2">() &lt; </span><span class="s1">Constants</span><span class="s2">.</span><span class="s1">POWERUP_COST</span><span class="s2">)</span>
+			<span class="s0">throw new </span><span class="s1">OutOfEnergyException</span><span class="s2">(</span><span class="s4">&quot;Not enough energy to use powerup&quot;</span><span class="s2">);</span>
+		
+		<span class="s1">current</span><span class="s2">.</span><span class="s1">executePowerupEffect</span><span class="s2">(</span><span class="s1">getCurrentOpponent</span><span class="s2">());</span>
+		<span class="s1">current</span><span class="s2">.</span><span class="s1">setEnergy</span><span class="s2">(</span><span class="s1">current</span><span class="s2">.</span><span class="s1">getEnergy</span><span class="s2">() - </span><span class="s1">Constants</span><span class="s2">.</span><span class="s1">POWERUP_COST</span><span class="s2">);</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public void </span><span class="s1">playTurn</span><span class="s2">() </span><span class="s0">throws </span><span class="s1">InvalidMoveException </span><span class="s2">{</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">current</span><span class="s2">.</span><span class="s1">isFrozen</span><span class="s2">()) {</span>
+			<span class="s1">System</span><span class="s2">.</span><span class="s1">out</span><span class="s2">.</span><span class="s1">println</span><span class="s2">(</span><span class="s1">current</span><span class="s2">.</span><span class="s1">getName</span><span class="s2">() + </span><span class="s4">&quot; is frozen! Turn skipped.&quot;</span><span class="s2">);</span>
+			<span class="s1">current</span><span class="s2">.</span><span class="s1">setFrozen</span><span class="s2">(</span><span class="s0">false</span><span class="s2">);</span>
+			<span class="s1">switchTurn</span><span class="s2">();</span>
+			<span class="s0">return</span><span class="s2">;</span>
+		<span class="s2">}</span>
+		
+		<span class="s0">int </span><span class="s1">roll </span><span class="s2">= </span><span class="s1">rollDice</span><span class="s2">();</span>
+		
+		<span class="s1">board</span><span class="s2">.</span><span class="s1">moveMonster</span><span class="s2">(</span><span class="s1">current</span><span class="s2">, </span><span class="s1">roll</span><span class="s2">, </span><span class="s1">getCurrentOpponent</span><span class="s2">());</span>
+		
+		<span class="s1">switchTurn</span><span class="s2">();</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">private void </span><span class="s1">switchTurn</span><span class="s2">() {</span>
+		<span class="s0">this</span><span class="s2">.</span><span class="s1">setCurrent</span><span class="s2">(</span><span class="s1">getCurrentOpponent</span><span class="s2">());</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">private boolean </span><span class="s1">checkWinCondition</span><span class="s2">(</span><span class="s1">Monster monster</span><span class="s2">) {</span>
+		<span class="s0">return </span><span class="s1">monster</span><span class="s2">.</span><span class="s1">getPosition</span><span class="s2">() == </span><span class="s1">Constants</span><span class="s2">.</span><span class="s1">WINNING_POSITION </span><span class="s2">&amp;&amp; </span>
+		       <span class="s1">monster</span><span class="s2">.</span><span class="s1">getEnergy</span><span class="s2">() &gt;= </span><span class="s1">Constants</span><span class="s2">.</span><span class="s1">WINNING_ENERGY</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+	<span class="s0">public </span><span class="s1">Monster getWinner</span><span class="s2">() {</span>
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">checkWinCondition</span><span class="s2">(</span><span class="s1">player</span><span class="s2">)) </span>
+			<span class="s0">return </span><span class="s1">player</span><span class="s2">;</span>
+		
+		<span class="s0">if </span><span class="s2">(</span><span class="s1">checkWinCondition</span><span class="s2">(</span><span class="s1">opponent</span><span class="s2">)) </span>
+			<span class="s0">return </span><span class="s1">opponent</span><span class="s2">;</span>
+		
+		<span class="s0">return null</span><span class="s2">;</span>
+	<span class="s2">}</span>
+	
+<span class="s2">}</span></pre>
+</body>
+</html>

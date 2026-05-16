@@ -1,0 +1,80 @@
+<html>
+<head>
+<title>Constants.java</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #cf8e6d;}
+.s1 { color: #bcbec4;}
+.s2 { color: #bcbec4;}
+.s3 { color: #7a7e85;}
+.s4 { color: #2aacb8;}
+</style>
+</head>
+<body bgcolor="#1e1f22">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+Constants.java</font>
+</center></td></tr></table>
+<pre><span class="s0">package </span><span class="s1">game</span><span class="s2">.</span><span class="s1">engine</span><span class="s2">;</span>
+
+<span class="s0">public final class </span><span class="s1">Constants </span><span class="s2">{</span>
+
+    <span class="s3">/* ===================================================== 
+       =============== 1. BOARD STRUCTURE ================== 
+       ===================================================== */</span>
+
+    <span class="s0">public static final int </span><span class="s1">BOARD_SIZE </span><span class="s2">= </span><span class="s4">100</span><span class="s2">;</span>
+
+    <span class="s0">public static final int </span><span class="s1">BOARD_ROWS </span><span class="s2">= </span><span class="s4">10</span><span class="s2">;</span>
+    <span class="s0">public static final int </span><span class="s1">BOARD_COLS </span><span class="s2">= </span><span class="s4">10</span><span class="s2">;</span>
+
+    <span class="s0">public static final int </span><span class="s1">STARTING_POSITION </span><span class="s2">= </span><span class="s4">0</span><span class="s2">;</span>
+    <span class="s0">public static final int </span><span class="s1">WINNING_POSITION </span><span class="s2">= </span><span class="s4">99</span><span class="s2">;</span>
+
+    <span class="s3">/* ===================================================== 
+       ============ 2. SPECIAL CELL POSITIONS ============== 
+       ===================================================== */</span>
+
+    <span class="s0">public static final int</span><span class="s2">[] </span><span class="s1">MONSTER_CELL_INDICES </span><span class="s2">= {</span><span class="s4">2</span><span class="s2">, </span><span class="s4">18</span><span class="s2">, </span><span class="s4">34</span><span class="s2">, </span><span class="s4">54</span><span class="s2">, </span><span class="s4">82</span><span class="s2">, </span><span class="s4">88</span><span class="s2">};</span>
+
+    <span class="s0">public static final int</span><span class="s2">[] </span><span class="s1">CONVEYOR_CELL_INDICES </span><span class="s2">= {</span><span class="s4">6</span><span class="s2">, </span><span class="s4">22</span><span class="s2">, </span><span class="s4">44</span><span class="s2">, </span><span class="s4">52</span><span class="s2">, </span><span class="s4">66</span><span class="s2">};</span>
+
+    <span class="s0">public static final int</span><span class="s2">[] </span><span class="s1">SOCK_CELL_INDICES </span><span class="s2">= {</span><span class="s4">32</span><span class="s2">, </span><span class="s4">42</span><span class="s2">, </span><span class="s4">74</span><span class="s2">, </span><span class="s4">84</span><span class="s2">, </span><span class="s4">98</span><span class="s2">};</span>
+
+    <span class="s0">public static final int</span><span class="s2">[] </span><span class="s1">CARD_CELL_INDICES </span><span class="s2">= {</span><span class="s4">4</span><span class="s2">, </span><span class="s4">12</span><span class="s2">, </span><span class="s4">28</span><span class="s2">, </span><span class="s4">36</span><span class="s2">, </span><span class="s4">48</span><span class="s2">, </span><span class="s4">56</span><span class="s2">, </span><span class="s4">60</span><span class="s2">, </span><span class="s4">76</span><span class="s2">, </span><span class="s4">86</span><span class="s2">, </span><span class="s4">90</span><span class="s2">};</span>
+
+    <span class="s3">/* ===================================================== 
+       =============== 3. GAME OBJECTIVES ================== 
+       ===================================================== */</span>
+
+    <span class="s0">public static final int </span><span class="s1">WINNING_ENERGY </span><span class="s2">= </span><span class="s4">1000</span><span class="s2">;</span>
+    <span class="s0">public static final int </span><span class="s1">MIN_ENERGY </span><span class="s2">= </span><span class="s4">0</span><span class="s2">;</span>
+
+    <span class="s3">/* ===================================================== 
+       ================== 5. CELL EFFECTS ================== 
+       ===================================================== */</span>
+
+    <span class="s0">public static final int </span><span class="s1">SLIP_PENALTY </span><span class="s2">= </span><span class="s4">100</span><span class="s2">;</span>
+
+    <span class="s3">/* ===================================================== 
+       =============== 6. MONSTER ABILITIES ================= 
+       ===================================================== */</span>
+
+    <span class="s3">// Multitasker passive bonus</span>
+    <span class="s0">public static final int </span><span class="s1">MULTITASKER_BONUS </span><span class="s2">= </span><span class="s4">200</span><span class="s2">;</span>
+
+    <span class="s3">// Schemer stolen bonus</span>
+    <span class="s0">public static final int </span><span class="s1">SCHEMER_STEAL </span><span class="s2">= </span><span class="s4">10</span><span class="s2">;</span>
+
+    <span class="s3">/* ===================================================== 
+       ================= 7. POWER &amp; ECONOMY ================= 
+       ===================================================== */</span>
+
+    <span class="s3">// Cost to activate a power-up (in turn)</span>
+    <span class="s0">public static final int </span><span class="s1">POWERUP_COST </span><span class="s2">= </span><span class="s4">500</span><span class="s2">;</span>
+
+<span class="s2">}</span>
+</pre>
+</body>
+</html>
